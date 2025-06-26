@@ -25,7 +25,7 @@ Este é um projeto acadêmico desenvolvido para a disciplina de Redes de Computa
 
 ### Requisitos
 
-- Python 3.7+
+- Instale o .NET SDK (recomendo o .NET 6 ou 8)
 - Terminal ou prompt de comando
 
 ### Passos
@@ -40,13 +40,17 @@ cd jogo-21-udp
 2. Execute o servidor:
 
 ```bash
-python servidor.py
+cd Servidor
+dotnet run
+
 ```
 
 3. Em outros terminais, execute os clientes:
 
 ```bash
-python cliente.py
+cd ../Cliente
+dotnet run
+
 ```
 
 4. Siga as instruções na tela para jogar.
@@ -55,8 +59,8 @@ python cliente.py
 
 ```
 📦 jogo-21-udp
-┣ 📄 servidor.py
-┣ 📄 cliente.py
+┣ 📄 servidor.cs
+┣ 📄 cliente.cs
 ┣ 📄 README.md
 ```
 
