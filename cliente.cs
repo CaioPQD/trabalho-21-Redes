@@ -1,45 +1,61 @@
-import socket
-import threading
+using System;
+using System.Net;
+using System.Net.Sockets;
+using System.Text;
+using System.Threading;
 
-SERVER_IP = '127.0.0.1'
-PORTA = 9999
+class Cliente
+{
+    static UdpClient cliente = new();
+    static IPEndPoint servidor = new("127.0.0.1", 9999);
 
-cliente = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-nome = input("Digite seu nome: ")
+    static void Main()
+    {
+        Console.Write("Digite seu nome: ");
+        string nome = Console.ReadLine();
+        Enviar($"ENTRAR:{nome}");
 
-def receber():
-    while True:
-        msg, _ = cliente.recvfrom(1024)
-        msg = msg.decode()
+        new Thread(Receber).Start();
 
-        if msg.startswith("CARTA:"):
-            valor = msg.split(":")[1]
-            print(f"Você recebeu uma carta: {valor}")
+        while (true)
+        {
+            Console.WriteLine("\n[1] Pedir carta\n[2] Parar");
+            string opcao = Console.ReadLine();
 
-        elif msg.startswith("RESULTADO:"):
-            status = msg.split(":")[1]
-            if status == "ganhou":
-                print(" Você ganhou!")
-            else:
-                print("  Você perdeu.")
-            break
+            if (opcao == "1")
+                Enviar("PEDIR_CARTA");
+            else if (opcao == "2")
+            {
+                Enviar("PARAR");
+                break;
+            }
+        }
+    }
 
-        elif msg.startswith("MENSAGEM:"):
-            print(msg.split(":", 1)[1])
+    static void Enviar(string msg)
+    {
+        byte[] dados = Encoding.UTF8.GetBytes(msg);
+        cliente.Send(dados, dados.Length, servidor);
+    }
 
-def jogar():
-    cliente.sendto(f"ENTRAR:{nome}".encode(), (SERVER_IP, PORTA))
+    static void Receber()
+    {
+        IPEndPoint origem = new(IPAddress.Any, 0);
+        while (true)
+        {
+            byte[] dados = cliente.Receive(ref origem);
+            string msg = Encoding.UTF8.GetString(dados);
 
-    while True:
-        print("\n[1] Pedir carta")
-        print("[2] Parar")
-        opcao = input("Escolha: ")
-
-        if opcao == "1":
-            cliente.sendto("PEDIR_CARTA".encode(), (SERVER_IP, PORTA))
-        elif opcao == "2":
-            cliente.sendto("PARAR".encode(), (SERVER_IP, PORTA))
-            break
-
-threading.Thread(target=receber).start()
-jogar()
+            if (msg.StartsWith("CARTA:"))
+                Console.WriteLine($"Você recebeu uma carta: {msg.Split(":")[1]}");
+            else if (msg.StartsWith("RESULTADO:"))
+            {
+                string status = msg.Split(":")[1];
+                Console.WriteLine(status == "ganhou" ? "🎉 Você ganhou!" : "😞 Você perdeu.");
+                break;
+            }
+            else if (msg.StartsWith("MENSAGEM:"))
+                Console.WriteLine(msg.Split(":", 2)[1]);
+        }
+    }
+}
