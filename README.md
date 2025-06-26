@@ -33,8 +33,8 @@ Este é um projeto acadêmico desenvolvido para a disciplina de Redes de Computa
 1. Clone este repositório:
 
 ```bash
-git clone https://github.com/seuusuario/jogo-21-udp.git
-cd jogo-21-udp
+git clone https://github.com/CaioPQD/trabalho-21-Redes.git
+cd trabalho-21-Redes
 ```
 
 2. Execute o servidor:
