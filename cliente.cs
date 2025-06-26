@@ -51,7 +51,7 @@ class Cliente
             else if (msg.StartsWith("RESULTADO:"))
             {
                 string status = msg.Split(":")[1];
-                Console.WriteLine(status == "ganhou" ? "🎉 Você ganhou!" : "😞 Você perdeu.");
+                Console.WriteLine(status == "ganhou" ? "! Você ganhou !" : "! Você perdeu.");
                 break;
             }
             else if (msg.StartsWith("MENSAGEM:"))
