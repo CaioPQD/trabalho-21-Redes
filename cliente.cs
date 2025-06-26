@@ -19,9 +19,9 @@ def receber():
         elif msg.startswith("RESULTADO:"):
             status = msg.split(":")[1]
             if status == "ganhou":
-                print("🎉 Você ganhou!")
+                print(" Você ganhou!")
             else:
-                print("😞 Você perdeu.")
+                print("  Você perdeu.")
             break
 
         elif msg.startswith("MENSAGEM:"):
